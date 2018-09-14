@@ -1,0 +1,41 @@
+type Book {
+  id: ID! @unique
+  createdAt: DateTime!
+  description: String!
+  title: String!
+  author: String!
+  image: String!
+  publishedDate: String!
+  isbn: String!
+  postedBy: User
+  votes: [Vote!]!
+}
+
+type User {
+  id: ID! @unique
+  name: String!
+  email: String! @unique
+  password: String!
+  books: [Book!]!
+  votes: [Vote!]!
+}
+
+type Vote {
+  id: ID! @unique
+  book: Book!
+  user: User!
+}
+
+type CustomBook {
+  isbn: String
+  image: String
+  title: String
+  author: String
+  publishedDate: String
+  description: String
+}
+
+
+extend type Query {
+  searchBooks(searchTerm: String!): [CustomBook]
+}

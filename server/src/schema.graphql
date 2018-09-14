@@ -1,0 +1,32 @@
+# import Book, Vote, CustomBook, VoteSubscriptionPayload from "./generated/prisma.graphql"
+
+type Query {
+  feed: [Book!]!
+  book(id: ID!): Book
+  searchBooks(searchTerm: String!): [CustomBook]
+}
+
+type Mutation {
+  post(title: String!, author: String!, description: String!, publishedDate: String!, image: String!, isbn: String! ): Book!
+  signup(email: String!, password: String!, name: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
+  vote(linkId: ID!): Vote
+}
+
+type AuthPayload {
+  token: String
+  user: User
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  books: [Book!]!
+}
+
+type Subscription {
+  newVote: VoteSubscriptionPayload
+}
+
+
