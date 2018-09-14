@@ -4,7 +4,7 @@ import { List, ListItem } from 'grommet'
 
 const SearchList = props => (
   <List selectable={true} onSelect={id => props.onSelect(props.books[id])}>
-    {props.books.map(book => <ListItem key={book.id} justify='between'
+    {props.books.map(book => <ListItem key={book.isbn} justify='between'
       separator='horizontal'>
       <span>
         {book.title}
