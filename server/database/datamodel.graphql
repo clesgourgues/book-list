@@ -4,11 +4,14 @@ type Book {
   description: String!
   title: String!
   author: String!
-  image: String!
-  publishedDate: String!
+  image: String
+  publishedDate: String
   isbn: String!
   postedBy: User
   votes: [Vote!]!
+  pageCount: String
+  publisher: String
+  textSnippet: String
 }
 
 type User {

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/cecile-lesgourgues-83b49b/database/dev
-# timestamp: Tue Sep 11 2018 11:59:51 GMT+0200 (CEST)
+# timestamp: Fri Sep 14 2018 09:25:58 GMT+0200 (CEST)
 
 type AggregateBook {
   count: Int!
@@ -28,11 +28,14 @@ type Book implements Node {
   description: String!
   title: String!
   author: String!
-  image: String!
-  publishedDate: String!
+  image: String
+  publishedDate: String
   isbn: String!
   postedBy(where: UserWhereInput): User
   votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
+  pageCount: String
+  publisher: String
+  textSnippet: String
 }
 
 """A connection to a list of items."""
@@ -49,9 +52,12 @@ input BookCreateInput {
   description: String!
   title: String!
   author: String!
-  image: String!
-  publishedDate: String!
+  image: String
+  publishedDate: String
   isbn: String!
+  pageCount: String
+  publisher: String
+  textSnippet: String
   postedBy: UserCreateOneWithoutBooksInput
   votes: VoteCreateManyWithoutBookInput
 }
@@ -70,9 +76,12 @@ input BookCreateWithoutPostedByInput {
   description: String!
   title: String!
   author: String!
-  image: String!
-  publishedDate: String!
+  image: String
+  publishedDate: String
   isbn: String!
+  pageCount: String
+  publisher: String
+  textSnippet: String
   votes: VoteCreateManyWithoutBookInput
 }
 
@@ -80,9 +89,12 @@ input BookCreateWithoutVotesInput {
   description: String!
   title: String!
   author: String!
-  image: String!
-  publishedDate: String!
+  image: String
+  publishedDate: String
   isbn: String!
+  pageCount: String
+  publisher: String
+  textSnippet: String
   postedBy: UserCreateOneWithoutBooksInput
 }
 
@@ -112,6 +124,12 @@ enum BookOrderByInput {
   publishedDate_DESC
   isbn_ASC
   isbn_DESC
+  pageCount_ASC
+  pageCount_DESC
+  publisher_ASC
+  publisher_DESC
+  textSnippet_ASC
+  textSnippet_DESC
   updatedAt_ASC
   updatedAt_DESC
 }
@@ -122,9 +140,12 @@ type BookPreviousValues {
   description: String!
   title: String!
   author: String!
-  image: String!
-  publishedDate: String!
+  image: String
+  publishedDate: String
   isbn: String!
+  pageCount: String
+  publisher: String
+  textSnippet: String
 }
 
 type BookSubscriptionPayload {
@@ -173,6 +194,9 @@ input BookUpdateInput {
   image: String
   publishedDate: String
   isbn: String
+  pageCount: String
+  publisher: String
+  textSnippet: String
   postedBy: UserUpdateOneWithoutBooksInput
   votes: VoteUpdateManyWithoutBookInput
 }
@@ -186,10 +210,9 @@ input BookUpdateManyWithoutPostedByInput {
   upsert: [BookUpsertWithWhereUniqueWithoutPostedByInput!]
 }
 
-input BookUpdateOneWithoutVotesInput {
+input BookUpdateOneRequiredWithoutVotesInput {
   create: BookCreateWithoutVotesInput
   connect: BookWhereUniqueInput
-  delete: Boolean
   update: BookUpdateWithoutVotesDataInput
   upsert: BookUpsertWithoutVotesInput
 }
@@ -201,6 +224,9 @@ input BookUpdateWithoutPostedByDataInput {
   image: String
   publishedDate: String
   isbn: String
+  pageCount: String
+  publisher: String
+  textSnippet: String
   votes: VoteUpdateManyWithoutBookInput
 }
 
@@ -211,6 +237,9 @@ input BookUpdateWithoutVotesDataInput {
   image: String
   publishedDate: String
   isbn: String
+  pageCount: String
+  publisher: String
+  textSnippet: String
   postedBy: UserUpdateOneWithoutBooksInput
 }
 
@@ -541,6 +570,126 @@ input BookWhereInput {
 
   """All values not ending with the given string."""
   isbn_not_ends_with: String
+  pageCount: String
+
+  """All values that are not equal to given value."""
+  pageCount_not: String
+
+  """All values that are contained in given list."""
+  pageCount_in: [String!]
+
+  """All values that are not contained in given list."""
+  pageCount_not_in: [String!]
+
+  """All values less than the given value."""
+  pageCount_lt: String
+
+  """All values less than or equal the given value."""
+  pageCount_lte: String
+
+  """All values greater than the given value."""
+  pageCount_gt: String
+
+  """All values greater than or equal the given value."""
+  pageCount_gte: String
+
+  """All values containing the given string."""
+  pageCount_contains: String
+
+  """All values not containing the given string."""
+  pageCount_not_contains: String
+
+  """All values starting with the given string."""
+  pageCount_starts_with: String
+
+  """All values not starting with the given string."""
+  pageCount_not_starts_with: String
+
+  """All values ending with the given string."""
+  pageCount_ends_with: String
+
+  """All values not ending with the given string."""
+  pageCount_not_ends_with: String
+  publisher: String
+
+  """All values that are not equal to given value."""
+  publisher_not: String
+
+  """All values that are contained in given list."""
+  publisher_in: [String!]
+
+  """All values that are not contained in given list."""
+  publisher_not_in: [String!]
+
+  """All values less than the given value."""
+  publisher_lt: String
+
+  """All values less than or equal the given value."""
+  publisher_lte: String
+
+  """All values greater than the given value."""
+  publisher_gt: String
+
+  """All values greater than or equal the given value."""
+  publisher_gte: String
+
+  """All values containing the given string."""
+  publisher_contains: String
+
+  """All values not containing the given string."""
+  publisher_not_contains: String
+
+  """All values starting with the given string."""
+  publisher_starts_with: String
+
+  """All values not starting with the given string."""
+  publisher_not_starts_with: String
+
+  """All values ending with the given string."""
+  publisher_ends_with: String
+
+  """All values not ending with the given string."""
+  publisher_not_ends_with: String
+  textSnippet: String
+
+  """All values that are not equal to given value."""
+  textSnippet_not: String
+
+  """All values that are contained in given list."""
+  textSnippet_in: [String!]
+
+  """All values that are not contained in given list."""
+  textSnippet_not_in: [String!]
+
+  """All values less than the given value."""
+  textSnippet_lt: String
+
+  """All values less than or equal the given value."""
+  textSnippet_lte: String
+
+  """All values greater than the given value."""
+  textSnippet_gt: String
+
+  """All values greater than or equal the given value."""
+  textSnippet_gte: String
+
+  """All values containing the given string."""
+  textSnippet_contains: String
+
+  """All values not containing the given string."""
+  textSnippet_not_contains: String
+
+  """All values starting with the given string."""
+  textSnippet_starts_with: String
+
+  """All values not starting with the given string."""
+  textSnippet_not_starts_with: String
+
+  """All values ending with the given string."""
+  textSnippet_ends_with: String
+
+  """All values not ending with the given string."""
+  textSnippet_not_ends_with: String
   postedBy: UserWhereInput
   votes_every: VoteWhereInput
   votes_some: VoteWhereInput
@@ -1132,6 +1281,13 @@ input UserUpdateInput {
   votes: VoteUpdateManyWithoutUserInput
 }
 
+input UserUpdateOneRequiredWithoutVotesInput {
+  create: UserCreateWithoutVotesInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateWithoutVotesDataInput
+  upsert: UserUpsertWithoutVotesInput
+}
+
 input UserUpdateOneWithoutBooksInput {
   create: UserCreateWithoutBooksInput
   connect: UserWhereUniqueInput
@@ -1139,14 +1295,6 @@ input UserUpdateOneWithoutBooksInput {
   delete: Boolean
   update: UserUpdateWithoutBooksDataInput
   upsert: UserUpsertWithoutBooksInput
-}
-
-input UserUpdateOneWithoutVotesInput {
-  create: UserCreateWithoutVotesInput
-  connect: UserWhereUniqueInput
-  delete: Boolean
-  update: UserUpdateWithoutVotesDataInput
-  upsert: UserUpsertWithoutVotesInput
 }
 
 input UserUpdateWithoutBooksDataInput {
@@ -1456,8 +1604,8 @@ input VoteSubscriptionWhereInput {
 }
 
 input VoteUpdateInput {
-  book: BookUpdateOneWithoutVotesInput
-  user: UserUpdateOneWithoutVotesInput
+  book: BookUpdateOneRequiredWithoutVotesInput
+  user: UserUpdateOneRequiredWithoutVotesInput
 }
 
 input VoteUpdateManyWithoutBookInput {
@@ -1479,11 +1627,11 @@ input VoteUpdateManyWithoutUserInput {
 }
 
 input VoteUpdateWithoutBookDataInput {
-  user: UserUpdateOneWithoutVotesInput
+  user: UserUpdateOneRequiredWithoutVotesInput
 }
 
 input VoteUpdateWithoutUserDataInput {
-  book: BookUpdateOneWithoutVotesInput
+  book: BookUpdateOneRequiredWithoutVotesInput
 }
 
 input VoteUpdateWithWhereUniqueWithoutBookInput {
