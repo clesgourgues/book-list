@@ -3,9 +3,9 @@ import BookQuery from './BookQuery';
 import { Section } from 'grommet';
 
 const CollectionSection = () => (
-  <Section pad='small'
+  <Section pad='large'
     justify='center'
-    align='start'
+    align='center'
   >
     <BookQuery />
   </Section>

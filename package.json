@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "apollo-boost": "^0.1.15",
+    "apollo-link-context": "^1.0.9",
     "autoprefixer": "7.1.6",
     "babel-core": "6.26.0",
     "babel-eslint": "7.2.3",
@@ -42,6 +43,8 @@
     "react-apollo": "^2.1.11",
     "react-dev-utils": "^5.0.2",
     "react-dom": "^16.5.0",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
     "resolve": "1.6.0",
     "sass": "^1.13.2",
     "sass-loader": "^7.1.0",

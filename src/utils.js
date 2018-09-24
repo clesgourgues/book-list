@@ -7,7 +7,6 @@ function unique(array, propertyName) {
 }
 
 export const getSearchResult = result => {
-  console.log(result)
   const bookList = result.items.map(book => {
     const obj = {};
     obj.title = book.volumeInfo.title ? book.volumeInfo.title : ''
@@ -19,7 +18,6 @@ export const getSearchResult = result => {
     obj.image = book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail  ? book.volumeInfo.imageLinks.thumbnail : ''
     obj.publisher = book.volumeInfo.publisher ? book.volumeInfo.publisher: ''
     obj.pageCount = book.volumeInfo.pageCount ? book.volumeInfo.pageCount : ''
-    console.log(obj)
     return obj
   }
   )
@@ -28,7 +26,6 @@ export const getSearchResult = result => {
 
 export const buildURL = ({ target, suggestion }) => {
   const query = target.value.split(" ").join("+")
-  console.log(query)
   return (
   suggestion.value === 'free' ?
     `${baseURL}?q=${target.value}&maxResults=20&orderBy=newest&langRestrict=fr&key=${API_KEY}` :

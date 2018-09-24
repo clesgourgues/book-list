@@ -1,23 +1,28 @@
 import React, { Component } from 'react'
-import { Box, Section, Label, SearchInput, Heading, Layer, Button } from 'grommet'
+import { withRouter } from 'react-router'
+import { Box, Label, SearchInput, Anchor, Select } from 'grommet'
 import { Close } from 'grommet-icons';
 import { searchCategories, getSearchResult, buildURL } from '../utils.js';
 import SearchList from './SearchList'
-import BookModal from './BookModal'
-
+import BookAlone from './BookAlone'
 
 class Search extends Component {
-  state = {
-    selectedBook: {},
-    books: [],
-    searchTerm: '',
-    searchCategory: '',
-    error: undefined,
-    layerActive: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedBook: {},
+      books: [],
+      searchTerm: '',
+      searchCategory: '',
+      error: undefined,
+    }
+    // create a ref to store the textInput DOM element
+    this.textInput = React.createRef();
+    // this.focusTextInput = this.focusTextInput.bind(this);
   }
 
-
   searchBooks(args) {
+    this.setState({ searchCategory: args.suggestion.value })
     const url = buildURL(args)
     fetch(url, { method: 'get' })
       .then(response => response.json())
@@ -28,11 +33,11 @@ class Search extends Component {
   }
 
   handleSelect = book => {
-    this.setState({ layerActive: true, selectedBook: book })
+    this.setState({ selectedBook: book })
   }
 
-  handleModalClose = () => {
-    this.setState({ layerActive: false })
+  handleBack = book => {
+    this.setState({ selectedBook: [] })
   }
 
   handleSave = () => {
@@ -40,55 +45,50 @@ class Search extends Component {
   }
 
   reset = () => {
+    this.textInput.current.inputRef.value = '';
     this.setState({ books: [], searchTerm: '' })
   }
 
   render() {
-    const layer = (this.state.layerActive)
-      ? <BookModal book={this.state.selectedBook} onClose={this.handleModalClose} onSave={this.handleSave} />
-      : null;
     return (
-      <Box>
-        {layer}
-        <Section pad='small'
-          justify='center'
+      <Box justify='center'
+        align='center'>
+        <Label
+          labelFor='search'
           align='start'
-        >
-          <Label
-            labelFor='search'
-            align='start'
-            margin='none'
-          >Add a book to your collection</Label>
-          <SearchInput
-            name='search'
-            id='search'
-            placeHolder='Type your search'
-            onSelect={({ target, suggestion }) => this.searchBooks({ target, suggestion })}
-            onDOMChange={e => this.setState({ searchTerm: e.target.value })}
-            suggestions={searchCategories}
+          margin='small'
+        >Add a book to your collection</Label>
+        <SearchInput
+          ref={this.textInput}
+          name='search'
+          id='search'
+          placeHolder='Type your search'
+          onSelect={({ target, suggestion }) => this.searchBooks({ target, suggestion })}
+          onDOMChange={e => this.setState({ searchTerm: e.target.value })}
+          suggestions={searchCategories}
+        />
+        <Box justify='center'
+          align='start'
+          pad='medium'>
+          <Select placeHolder='None'
+            inline={false}
+            multiple={true}
+            //onSearch={...}
+            options={['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight']}
+            value={undefined}
+            //onChange={...} 
+            />
+          <Anchor align='center' onClick={this.reset} icon={<Close color='white'/>}
+            label='Cancel search'
           />
-          <Button onClick={this.reset} icon={<Close />}
-            type='reset' />
-        </Section>
-        <Section pad='small'
-          justify='center'
-          align='start'
-        >
-          <Heading tag='h2'
-            strong={false}
-            uppercase={false}
-            truncate={false}
-            align='start'
-            margin='small'>
-            Results
-            </Heading>
-          {this.state.books &&
-            <SearchList onSelect={this.handleSelect} books={this.state.books} />}
-        </Section>
+        </Box>
+        {Object.keys(this.state.selectedBook).length > 0 ?
+          <BookAlone handleBack={this.handleBack} book={this.state.selectedBook} /> :
+          <SearchList onSelect={this.handleSelect} books={this.state.books} />}
       </Box>
     );
   }
 }
 
-export default Search
+export default withRouter(Search)
 

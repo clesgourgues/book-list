@@ -12,7 +12,7 @@ const BookList = props => (
     {props.books.map(book => <Tile key={book.id} align='center'
       pad='small'
       margin='small'>
-      <Book book={book} short={true}/>
+      <Book book={book} />
     </Tile>)}
   </Tiles>
 )

@@ -3,9 +3,9 @@ import { Section } from 'grommet';
 import Search from './Search';
 
 const SearchSection = (props) => (
-  <Section pad='small'
+  <Section pad='large'
     justify='center'
-    align='start'
+    align='center'
   >
     <Search />
   </Section>

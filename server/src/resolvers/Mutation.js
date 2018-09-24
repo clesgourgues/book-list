@@ -27,6 +27,8 @@ async function login(parent, args, context, info) {
     throw new Error('No such user found')
   }
 
+  console.log(user)
+
   // 2
   const valid = await bcrypt.compare(args.password, user.password)
   if (!valid) {
@@ -54,11 +56,16 @@ function post(parent, args, context, info) {
         isbn: args.isbn,
         publishedDate: args.publishedDate,
         postedBy: { connect: { id: userId } },
+        pageCount: args.pageCount,
+        publisher: args.publisher,
+        textSnippet: args.textSnippet
       },
     },
     info,
   )
 }
+
+
 
 async function vote(parent, args, context, info) {
   // 1
@@ -69,7 +76,7 @@ async function vote(parent, args, context, info) {
     user: { id: userId },
     book: { id: args.bookId },
   })
-  if (linkExists) {
+  if (bookExists) {
     throw new Error(`Already voted for book: ${args.bookId}`)
   }
 

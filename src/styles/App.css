@@ -1,9 +1,15 @@
-h2.grommetux-heading {
-  font-size: 1rem;
+.grommet {
+  background-color: #FF3CAC;
+  background-image: linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);
+  color: #fff;
 }
 
-.grommetux-label {
-  font-size: 0.9rem;
+.grommet a, span {
+  color: #fff;
+}
+
+h2.grommetux-heading {
+  font-size: 1rem;
 }
 
 .grommetux-box--pad-small {
@@ -12,4 +18,39 @@ h2.grommetux-heading {
 
 .grommetux-paragraph {
   margin: 0;
+}
+
+.grommetux-password-input__input {
+  border: none;
+  padding: 0 12px;
+}
+
+.grommetux-password-input {
+  display: flex;
+  justify-content: space-between
+}
+
+.grommetux-button--plain .grommetux-button__icon {
+  padding: 0 12px;
+  margin-right: 1rem;
+}
+
+.grommetux-title {
+  font-size: 3rem;
+}
+
+.grommetux-tile, .grommetux-search-input__input {
+border: 1px solid #fff;
+}
+
+.grommetux-anchor, .grommetux-search-input__input  {
+  color: #fff;
+}
+
+span.grommetux-button__icon svg {
+  stroke: #fff;
+}
+
+.grommetux-anchor--icon-label {
+  color: #fff;
 }

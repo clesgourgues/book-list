@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
-import { Grommet, Accordion, AccordionPanel } from 'grommet';
+import { Switch, Route } from 'react-router-dom'
+import { Grommet, Box, App } from 'grommet';
 import AppHeader from './AppHeader';
-import SearchSection from './SearchSection';
+import HomeSection from './HomeSection';
 import CollectionSection from './CollectionSection';
+import LoginSection from './LoginSection';
 
 class BookApp extends Component {
   render() {
     return (
       <Grommet>
-        <AppHeader />
-        <Accordion>
-          <AccordionPanel heading='Search for books'>
-            <SearchSection />
-          </AccordionPanel>
-          <AccordionPanel heading='My collection'>
-            <CollectionSection />
-          </AccordionPanel>
-          <AccordionPanel heading='Other content'>
-            Other
-          </AccordionPanel>
-        </Accordion>
+        <App centered={true}>
+          <Box full={true}>
+            <AppHeader />
+            <Switch>
+              <Route exact path="/" component={HomeSection} />
+              <Route exact path="/collection" component={CollectionSection} />
+              <Route exact path="/login" component={LoginSection} />
+            </Switch>
+          </Box>
+        </App>
       </Grommet>
 
     );
