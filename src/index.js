@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import BookApp from './components/BookApp';
 import registerServiceWorker from './registerServiceWorker';
 import { ApolloProvider } from 'react-apollo';
-import { ApolloClient } from 'apollo-client';
+import { ApolloClient } from 'apollo-boost';
 import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { BrowserRouter } from 'react-router-dom';
@@ -25,6 +25,15 @@ const authLink = setContext((_, { headers }) => {
     }
   }
 })
+
+/* const client = new ApolloClient({
+  uri: `https://nx9zvp49q7.lp.gql.zone/graphql`,
+  clientState: {
+    defaults,
+    resolvers,
+    typeDefs
+  }
+}); */
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),

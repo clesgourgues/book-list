@@ -32,3 +32,6 @@ export const buildURL = ({ target, suggestion }) => {
     `${baseURL}?q=+${suggestion.value}:${query}&maxResults=30&orderBy=newest&langRestrict=fr&key=${API_KEY}`
 )
 }
+
+export const categoryWording = [['inauthor', 'author'], ['intitle', 'title'], ['intitle', 'title'], ['subject', 'subject'], ['isbn', 'isbn'], ['free', 'free search']];
+

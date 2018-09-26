@@ -3,7 +3,13 @@
 type Query {
   feed: [Book!]!
   book(id: ID!): Book
+  me: User
+  booksByUser(id: ID!): User
   searchBooks(searchTerm: String!): [CustomBook]
+}
+
+input BookFilter {
+  postedBy: ID
 }
 
 type Mutation {
@@ -26,7 +32,7 @@ type User {
 }
 
 type Subscription {
-  newVote: VoteSubscriptionPayload
+  newBook: BookSubscriptionPayload
 }
 
 

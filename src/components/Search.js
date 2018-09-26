@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
-import { Box, Label, SearchInput, Anchor, Select } from 'grommet'
-import { Close } from 'grommet-icons';
+import { Box, Label, SearchInput, Anchor, Form } from 'grommet';
+import Refresh from 'grommet/components/icons/base/Refresh';
 import { searchCategories, getSearchResult, buildURL } from '../utils.js';
 import SearchList from './SearchList'
 import BookAlone from './BookAlone'
+import BookQuery from './BookQuery.js';
 
 class Search extends Component {
   constructor(props) {
@@ -40,51 +41,50 @@ class Search extends Component {
     this.setState({ selectedBook: [] })
   }
 
-  handleSave = () => {
-    console.log(this.state.selectedBook)
-  }
-
   reset = () => {
     this.textInput.current.inputRef.value = '';
     this.setState({ books: [], searchTerm: '' })
   }
 
   render() {
+    const userInfo = this.props.user ? `Hey ${this.props.user.name}, add a book to your collection !`:
+    'Search books, login to save them !'
     return (
       <Box justify='center'
         align='center'>
-        <Label
-          labelFor='search'
-          align='start'
-          margin='small'
-        >Add a book to your collection</Label>
-        <SearchInput
-          ref={this.textInput}
-          name='search'
-          id='search'
-          placeHolder='Type your search'
-          onSelect={({ target, suggestion }) => this.searchBooks({ target, suggestion })}
-          onDOMChange={e => this.setState({ searchTerm: e.target.value })}
-          suggestions={searchCategories}
-        />
+        <Form plain={true}>
+          <Box align='center' direction='column'>
+            <Label
+              labelFor='search'
+              align='start'
+              margin='small'
+            >{userInfo}</Label>
+            <SearchInput
+              ref={this.textInput}
+              name='search'
+              id='search'
+              placeHolder='Type your search'
+              onSelect={({ target, suggestion }) => this.searchBooks({ target, suggestion })}
+              onDOMChange={e => this.setState({ searchTerm: e.target.value })}
+              suggestions={searchCategories}
+            />
+          </Box>
+        </Form>
         <Box justify='center'
           align='start'
           pad='medium'>
-          <Select placeHolder='None'
-            inline={false}
-            multiple={true}
-            //onSearch={...}
-            options={['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight']}
-            value={undefined}
-            //onChange={...} 
-            />
-          <Anchor align='center' onClick={this.reset} icon={<Close color='white'/>}
-            label='Cancel search'
-          />
+          <Anchor align='start' onClick={this.reset} icon={<Refresh size="small" colorIndex='light-1' />}
+            label='Cancel search'>Clear search</Anchor>
         </Box>
+        {this.state.books.length === 0 && <BookQuery />}
         {Object.keys(this.state.selectedBook).length > 0 ?
           <BookAlone handleBack={this.handleBack} book={this.state.selectedBook} /> :
-          <SearchList onSelect={this.handleSelect} books={this.state.books} />}
+          this.state.searchTerm ?
+            <SearchList
+              searchTerm={this.state.searchTerm}
+              searchCategory={this.state.searchCategory}
+              onSelect={this.handleSelect}
+              books={this.state.books} /> : null}
       </Box>
     );
   }

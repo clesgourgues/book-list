@@ -3,8 +3,9 @@ import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import { withApollo } from 'react-apollo';
 import { withRouter } from 'react-router';
-import { Article, Section, Headline, Heading, Image, Button, Paragraph, Timestamp, Anchor } from 'grommet';
-import { LinkPrevious } from 'grommet-icons';
+import { Section, Heading, Image, Button, Paragraph, Timestamp, Anchor, Box } from 'grommet';
+import FormPrevious from 'grommet/components/icons/base/FormPrevious';
+import Favorite from 'grommet/components/icons/base/Favorite';
 import { Link } from 'react-router-dom'
 import { AUTH_TOKEN } from '../constants'
 
@@ -27,64 +28,109 @@ const POST_MUTATION = gql`
   }
 `
 
+const VOTE_MUTATION = gql`
+  mutation VoteMutation($linkId: ID!) {
+    vote(linkId: $linkId) {
+      id
+      link {
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+      user {
+        id
+      }
+    }
+  }
+`
+
 const BookAlone = props => {
-  const { author, title, description, textSnippet, publishedDate, image, isbn, publisher, pageCount } = props.book
+  const { id, author, title, description, textSnippet, publishedDate, image, isbn, publisher, pageCount } = props.book
   const publishInfo = publisher ? <strong>Published by {publisher} on <Timestamp value={publishedDate}
     fields='date' /></strong> : null
   const pagesInfo = pageCount ? <strong> - {pageCount} pages</strong> : null
   const authToken = localStorage.getItem(AUTH_TOKEN)
   return (
-    <Article>
-      <Section pad='medium'
-        justify='center'
-        align='start'>
-        <Anchor onClick={props.handleBack} icon={<LinkPrevious />}
+    <Section pad='medium'
+      justify='center'
+      align='center'>
+      <Box pad='small' alignSelf='start'>
+        <Anchor align='center' onClick={props.handleBack} icon={<FormPrevious colorIndex='light-1' size="small" />}
           label='Back to results'
         />
-        <Image src={image}
-          alt={`${props.book.title} - ${author}`}
-          full={false} size='small' />
-        <Headline strong size='small' margin='none'>
-          {title}
-        </Headline>
-        <Heading size='small' margin='medium'>
-          {author}
-        </Heading>
-        <Paragraph margin='medium'>
-          {publishInfo} {pagesInfo}
-        </Paragraph>
-      </Section>
-      <Section pad='medium'
-        justify='center'
-        align='start'>
-        {authToken ?
-          (<Mutation mutation={POST_MUTATION} variables={{ author, title, description, textSnippet, publishedDate, image, isbn, publisher, pageCount }}
-            onCompleted={() => props.history.push('/')}>
-            {postMutation => (
-              <Button
-                label='Save to my collection'
-                onClick={postMutation}
-                primary={false}
-                secondary={false}
-                accent={false}
-                plain={false}
-                type='submit' />
-            )}
-          </Mutation>) : (<Paragraph margin='medium'>
-            <Link to="/login">
-              <Anchor tag='span' align='start'
-                label='Login' >Login</Anchor>
-            </Link> to save this book to your collection !
+      </Box>
+      <div className='bookalone'>
+        <Box direction='row' pad='medium' align='start'>
+          <Image src={image}
+            alt={`${props.book.title} - ${author}`}
+            full={false} size='small' />
+          <Box pad='small'>
+            <Heading strong tag='h3' margin='none'>
+              {title}
+            </Heading>
+            <div className='author'>
+              {author}
+            </div>
+            <Paragraph margin='medium'>
+              {publishInfo} {pagesInfo}
+            </Paragraph>
+          </Box>
+        </Box>
+        <Box pad='small'
+          justify='center'
+          align='start'>
+
+          {authToken ?
+            (<Mutation
+              mutation={POST_MUTATION} variables={{ author, title, description, textSnippet, publishedDate, image, isbn, publisher, pageCount }}
+               /* update={(cache, { data: { Book } }) => {
+                const { books } = cache.readQuery({ query: ROOT_QUERY.feed });
+                cache.writeQuery({
+                  query: GET_TODOS.feed,
+                  data: { todos: todos.concat([Book]) }
+                });
+              }}  */
+              onCompleted={() => props.history.push('/')}>
+              {postMutation => (
+                <Button
+                  label='Save to my collection'
+                  onClick={postMutation}
+                  primary={false}
+                  secondary={false}
+                  accent={false}
+                  plain={false}
+                  type='submit' />
+              )}
+            </Mutation>) : (<Paragraph margin='medium'>
+              <Link to="/login">
+                <Anchor tag='span' align='start'
+                  label='Login' >Login</Anchor>
+              </Link> to save this book to your collection !
         </Paragraph>)}
-      </Section>
-      <Section pad='medium'
-        justify='center'
-        align='start'>
-        <Paragraph>
-          {description}
-        </Paragraph>
-      </Section>
-    </Article>
+          {authToken && (
+            <Mutation mutation={VOTE_MUTATION}>
+              {voteMutation => (
+                <Box pad='small' onClick={voteMutation({ variables: { bookId: id } })}>
+                  <Anchor align='center' icon={<Favorite colorIndex='light-1' size="small" />}
+                    label='Vote for this book'
+                  />
+                </Box>
+              )}
+            </Mutation>)}
+        </Box>
+        <Box pad='small'
+          justify='center'
+          align='start'>
+          <Paragraph>
+            {description}
+          </Paragraph>
+        </Box>
+      </div>
+    </Section>
+
   )
 }
 
