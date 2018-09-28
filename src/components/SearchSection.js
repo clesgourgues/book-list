@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import { getUserNameQuery } from '../graphql';
-import { Section } from 'grommet';
+import { Section, Notification } from 'grommet';
 import Spinning from 'grommet/components/icons/Spinning'
 import Search from './Search';
 import { AUTH_TOKEN } from '../constants'
@@ -14,8 +14,11 @@ const SearchSection = () => {
     (<Query
       query={getUserNameQuery}
     >
-      {({ loading, data: { me } }) => {
+      {({ loading, error, data: { me } }) => {
         if (loading) return <Spinning />
+        if (error) return <Notification
+        message='Something went wrong, please retry'
+        status='critical' />
         return (<Section pad='large'
           justify='center'
           align='center'

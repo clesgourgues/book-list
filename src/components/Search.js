@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import { Box, Label, SearchInput, Anchor, Form, Section } from 'grommet';
+import { Box, Label, SearchInput, Anchor, Form, Section, Notification } from 'grommet';
 import Refresh from 'grommet/components/icons/base/Refresh';
 import { searchCategories, getSearchResult, buildURL } from '../utils.js';
 import SearchList from './SearchList'
@@ -28,43 +28,40 @@ class Search extends Component {
     const url = buildURL(args)
     fetch(url, { method: 'get' })
       .then(response => response.json())
-      .then(result => {
-        this.setState({ books: getSearchResult(result), error: undefined })
-      })
-      .catch(error => this.setState({ books: undefined, error: error }));
+      .then(result => this.setState({ books: getSearchResult(result), error: undefined }))
+      .catch(error => {
+        this.setState({ books: [], error: error })
+      });
   }
 
   handleSelect = book => {
     this.setState({ selectedBook: book })
   }
 
-/*   handleBack = book => {
-    this.setState({ selectedBook: [] })
-  }
- */
   reset = () => {
     this.textInput.current.inputRef.value = '';
-    this.setState({ books: [], searchTerm: '' })
+    this.setState({ books: [], searchTerm: '', error: undefined })
   }
 
   render() {
     const userInfo = this.props.user ?
-    (<Label
-      labelFor='search'
-      align='start'
-      margin='small'
-    >
-    Hey {this.props.user.name}, add a book to your collection !</Label>) :
       (<Label
         labelFor='search'
         align='start'
         margin='small'
       >
-      Search books, 
+        Hey {this.props.user.name}, add a book to your collection !</Label>) :
+      (<Label
+        labelFor='search'
+        align='start'
+        margin='small'
+      >
+        Search books,
       <Link to="/login">
           <Anchor tag='span' align='start'
             label='Login' > login </Anchor>
         </Link>to save them to your collection !</Label>)
+
     return (
       <Section pad='large'
         justify='center'
@@ -92,8 +89,13 @@ class Search extends Component {
             <Anchor align='start' onClick={this.reset} icon={<Refresh size="small" colorIndex='light-1' />}
               label='Cancel search'>Clear search</Anchor>
           </Box>
+
+          {this.state.error !== undefined && this.state.books.length === 0 && <Notification
+            message='We didnt find any book, try another search !'
+            status='critical' />}
           {this.state.books.length === 0 && <BookQuery />}
-          {Object.keys(this.state.selectedBook).length > 0 ?
+
+          {Object.keys(this.state.selectedBook).length > 0 && this.state.error === undefined ?
             <BookAlone handleBack={this.handleBack} book={this.state.selectedBook} /> :
             this.state.searchTerm ?
               <SearchList

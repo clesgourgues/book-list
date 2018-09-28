@@ -4,12 +4,10 @@ import { Query } from 'react-apollo';
 import Spinning from 'grommet/components/icons/Spinning';
 import { Notification } from 'grommet';
 import { getBookByIdQuery, getUserNameQuery } from '../graphql';
-import { AUTH_TOKEN } from '../constants'
 
 
 const BookAloneSection = props => {
   const id = props.match.params.id
-  const authToken = localStorage.getItem(AUTH_TOKEN)
   return (
     <Query query={getUserNameQuery}>
       {({ loading, error, data: { me } }) => {
