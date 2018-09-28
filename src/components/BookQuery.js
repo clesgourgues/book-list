@@ -1,30 +1,8 @@
 import React, { Component } from 'react'
 import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
+import { getBookListQuery } from '../graphql';
 import { Section, Heading } from 'grommet';
 import BookList from './BookList'
-
-const FEED_QUERY = gql`
-  {
-    feed {
-      id
-      title
-      author
-      description
-      image
-      postedBy {
-          id
-          name
-        }
-        votes {
-          id
-          user {
-            id
-          }
-        }
-    }
-  }
-`
 
 class BookQuery extends Component {
   render() {
@@ -40,7 +18,7 @@ class BookQuery extends Component {
           margin='small'>
           Recently added
         </Heading>
-        <Query query={FEED_QUERY}>
+        <Query query={getBookListQuery}>
           {({ loading, error, data }) => {
             if (loading) return <div>Fetching</div>
             if (error) return <div>Error</div>

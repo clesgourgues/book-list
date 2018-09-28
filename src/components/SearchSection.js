@@ -1,32 +1,33 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import { getUserNameQuery } from '../graphql';
 import { Section } from 'grommet';
+import Spinning from 'grommet/components/icons/Spinning'
 import Search from './Search';
+import { AUTH_TOKEN } from '../constants'
 
 
-const LOGGED_IN_USER_QUERY = gql`
-      query LoggedInUserQuery {
-      me {
-          id
-          name
-        }
-    }
-`
+const SearchSection = () => {
+  const authToken = localStorage.getItem(AUTH_TOKEN)
 
-const SearchSection = (props) => {
-  const loggedInUser = props.loggedInUserQuery.me
   return (
-    <Section pad='large'
-      justify='center'
-      align='center'
+    authToken ?
+    (<Query
+      query={getUserNameQuery}
     >
-      <Search user={loggedInUser} />
-    </Section>
+      {({ loading, data: { me } }) => {
+        if (loading) return <Spinning />
+        return (<Section pad='large'
+          justify='center'
+          align='center'
+        >
+          <Search user={me} />
+        </Section>
+        )
+      }}
+    </Query>) : <Search />
   )
 };
 
 
-export default graphql(LOGGED_IN_USER_QUERY, {
-    name: 'loggedInUserQuery',
-  })(SearchSection)
+export default SearchSection

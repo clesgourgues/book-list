@@ -4,6 +4,7 @@ import { Anchor, Section } from 'grommet';
 import LoginForm from './LoginForm'
 
 
+
 class LoginSection extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +30,6 @@ class LoginSection extends Component {
 
   _confirm = async data => {
     const { token } = await this.state.login ? data.login : data.signup
-    await console.log(data)
     this._saveUserData(token)
     this.props.history.push(`/collection`)
   }

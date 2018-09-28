@@ -1,4 +1,4 @@
-# import Book, Vote, CustomBook, VoteSubscriptionPayload from "./generated/prisma.graphql"
+# import Book, Vote, CustomBook, VoteSubscriptionPayload, VoteSubscriptionPayload from "./generated/prisma.graphql"
 
 type Query {
   feed: [Book!]!
@@ -33,6 +33,7 @@ type User {
 
 type Subscription {
   newBook: BookSubscriptionPayload
+  newVote: VoteSubscriptionPayload
 }
 
 

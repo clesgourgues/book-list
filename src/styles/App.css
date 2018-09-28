@@ -1,3 +1,19 @@
+html, 
+body {
+    height: 100%;
+}
+
+html{
+  background: linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%) no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+}
+
+.grommet {
+  background-color: transparent;
+  color: #fff;
+}
+
 a:hover{
   text-decoration: none !important;
   color: #fff;
@@ -7,10 +23,8 @@ input.grommetux-text-input {
   color: grey
 }
 
-.grommet{
-  background-color: #ffd602;
-  background-image: linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);
-  color: #fff;
+nav.grommetux-box--direction-column a > span {
+  color: grey;
 }
 
 
@@ -149,4 +163,8 @@ svg.grommetux-color-index-light-1 {
 
 svg.grommetux-control-icon {
   stroke: #fff;
+}
+
+input.grommetux-input.grommetux-password-input__input {
+  margin-left: 1.6rem;
 }

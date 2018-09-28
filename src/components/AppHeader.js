@@ -36,7 +36,7 @@ const AppHeader = (props) => {
                 label='My collection'>My collection</Anchor>
             </Link>
             {authToken ? (
-              <Link to="/login">
+              <Link to="/">
                 <Anchor tag='span' align='start'
                   label='Login' onClick={() => {
                     localStorage.removeItem(AUTH_TOKEN)

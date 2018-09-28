@@ -1,12 +1,11 @@
 import React from 'react'
-import { Mutation } from 'react-apollo'
+import { Mutation } from 'react-apollo';
+import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router'
 import gql from 'graphql-tag'
-import { withApollo } from 'react-apollo';
-import { withRouter } from 'react-router';
 import { Section, Heading, Image, Button, Paragraph, Timestamp, Anchor, Box } from 'grommet';
 import FormPrevious from 'grommet/components/icons/base/FormPrevious';
 import Favorite from 'grommet/components/icons/base/Favorite';
-import { Link } from 'react-router-dom'
 import { AUTH_TOKEN } from '../constants'
 
 
@@ -29,8 +28,8 @@ const POST_MUTATION = gql`
 `
 
 const VOTE_MUTATION = gql`
-  mutation VoteMutation($linkId: ID!) {
-    vote(linkId: $linkId) {
+  mutation VoteMutation($bookId: ID!) {
+    vote(bookId: $bookId) {
       id
       link {
         votes {
@@ -79,38 +78,32 @@ const BookAlone = props => {
             </Paragraph>
           </Box>
         </Box>
-        <Box pad='small'
-          justify='center'
-          align='start'>
 
-          {authToken ?
-            (<Mutation
+        {authToken ?
+          (<Box pad='small'
+            justify='center'
+            align='start'>
+            <Mutation
               mutation={POST_MUTATION} variables={{ author, title, description, textSnippet, publishedDate, image, isbn, publisher, pageCount }}
-               /* update={(cache, { data: { Book } }) => {
-                const { books } = cache.readQuery({ query: ROOT_QUERY.feed });
-                cache.writeQuery({
-                  query: GET_TODOS.feed,
-                  data: { todos: todos.concat([Book]) }
-                });
-              }}  */
-              onCompleted={() => props.history.push('/')}>
+              /* update={(cache, { data: { Book } }) => {
+               const { books } = cache.readQuery({ query: ROOT_QUERY.feed });
+               cache.writeQuery({
+                 query: GET_TODOS.feed,
+                 data: { todos: todos.concat([Book]) }
+               });
+             }}  */
+              onCompleted={() => props.history.push('/collection')}>
               {postMutation => (
-                <Button
-                  label='Save to my collection'
-                  onClick={postMutation}
-                  primary={false}
-                  secondary={false}
-                  accent={false}
-                  plain={false}
-                  type='submit' />
+                  <Button
+                    label='Save to my collection'
+                    onClick={postMutation}
+                    primary={false}
+                    secondary={false}
+                    accent={false}
+                    plain={false}
+                    type='submit' />
               )}
-            </Mutation>) : (<Paragraph margin='medium'>
-              <Link to="/login">
-                <Anchor tag='span' align='start'
-                  label='Login' >Login</Anchor>
-              </Link> to save this book to your collection !
-        </Paragraph>)}
-          {authToken && (
+            </Mutation>
             <Mutation mutation={VOTE_MUTATION}>
               {voteMutation => (
                 <Box pad='small' onClick={voteMutation({ variables: { bookId: id } })}>
@@ -119,8 +112,19 @@ const BookAlone = props => {
                   />
                 </Box>
               )}
-            </Mutation>)}
-        </Box>
+            </Mutation></Box>)
+          : (
+            <Box pad='small'
+              justify='center'
+              align='start'>
+              <Paragraph margin='medium'>
+                <Link to="/login">
+                  <Anchor tag='span' align='start'
+                    label='Login' >Login</Anchor>
+                </Link> to save this book to your collection !
+              </Paragraph>
+            </Box>)}
+
         <Box pad='small'
           justify='center'
           align='start'>
@@ -134,4 +138,4 @@ const BookAlone = props => {
   )
 }
 
-export default withApollo(withRouter(BookAlone));
+export default withRouter(BookAlone);

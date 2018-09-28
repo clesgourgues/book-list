@@ -1,83 +1,37 @@
 import React from 'react';
-import { Section, Heading } from 'grommet';
-import { Query, graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-import BookList from './BookList';
+import { Query } from 'react-apollo';
+import { Redirect } from 'react-router';
+import { getUserNameQuery } from '../graphql';
+import { Section } from 'grommet';
+import Spinning from 'grommet/components/icons/Spinning'
+import Collection from './Collection';
 import { AUTH_TOKEN } from '../constants'
 
 
-const BOOK_BY_USER_QUERY = gql`
-query booksByUser($id: ID!){
-    booksByUser(id: $id) {
-      name
-      books{
-        id
-        title
-        author
-        description
-        image
-          postedBy {
-          id
-          name
-          }
-          votes {
-            id
-            user {
-            id
-            }
-        }}
-  }
-  }
-`
-
-const LOGGED_IN_USER_QUERY = gql`
-      query LoggedInUserQuery {
-      me {
-          id
-          name
-        }
-    }
-`
-
-const CollectionSection = props => {
-  //const data = client.readQuery({ BOOK_BY_USER_QUERY });
+const CollectionSection = (props) => {
   const authToken = localStorage.getItem(AUTH_TOKEN);
-  const { name, id } = props.loggedInUserQuery ? props.loggedInUserQuery.me : null
-  let heading = "";
-  if(authToken) {
-    heading = `${name}'s books collection`
-  } else {
-    heading = 'Please login to see your collection'
-  }
-
   return (
-    <Section pad='large'
-      justify='center'
-      align='center'
-    >
-      <Heading tag='h3'
-        strong={false}
-        truncate={false}
-        align='start'
-        margin='small'>
-        {heading}
-      </Heading>
-      {authToken &&
-      <Query query={BOOK_BY_USER_QUERY} variables={{ id }}>
-        {({ loading, error, data }) => {
-          if (loading) return <div>Fetching</div>
+    authToken ?
+      (<Query query={getUserNameQuery}>
+        {({ loading, error, data: { me } }) => {
+          if (loading) return <Spinning />
           if (error) return <div>Error</div>
-          const booksToRender = data.booksByUser.books
-          return (
-            <BookList books={booksToRender} />
+          return (<Section pad='large'
+            justify='center'
+            align='center'
+          >
+            <Collection user={me} />
+          </Section>
           )
         }}
-      </Query>
-      }
-    </Section>
+      </Query>) : (<Redirect
+        to={{
+          pathname: "/login"
+        }}
+      />
+      )
   )
 };
 
-export default graphql(LOGGED_IN_USER_QUERY, {
-  name: 'loggedInUserQuery',
-})(CollectionSection)
+
+export default CollectionSection

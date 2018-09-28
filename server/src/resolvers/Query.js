@@ -9,17 +9,17 @@ function feed(parent, args, context, info) {
   return context.db.query.books({}, info)
 }
 
-async function booksByUser(parent, args, context, info) {
-  return await context.db.query.user({ where: { id: args.id } }, info)
+function booksByUser(parent, args, context, info) {
+  return context.db.query.user({ where: { id: args.id } }, info)
 }
 
-async function book(parent, args, context, info) {
-  return await context.db.query.book({ where: { id: args.id } }, info)
+function book(parent, args, context, info) {
+  return context.db.query.book({ where: { id: args.id } }, info)
 }
 
-async function me(parent, args, context, info) {
+function me(parent, args, context, info) {
   const id = getUserId(context)
-  return await context.db.query.user({ where: { id } }, info)
+  return context.db.query.user({ where: { id } }, info)
 }
 
 /* async function booksByUser(parent, args, context, info) {

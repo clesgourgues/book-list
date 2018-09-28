@@ -16,7 +16,7 @@ const Book = props => {
         truncate={true}
         size='small'
         wrap={true}
-        link={<Anchor href=''
+        link={<Anchor tag='span' href=''
           label={description} />}
       />
     </Link>

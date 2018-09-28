@@ -1,5 +1,6 @@
 import React from 'react'
-import { Form, Header, Heading, Footer, Button, FormFields, TextInput, PasswordInput, FormField } from 'grommet'
+import { Form, Header, Heading, Footer, Button, FormFields, TextInput, PasswordInput, FormField, Notification, Box } from 'grommet';
+import Spinning from 'grommet/components/icons/Spinning'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
@@ -56,9 +57,17 @@ const LoginForm = props => {
           variables={{ email, password, name }}
           onCompleted={data => handleClick(data)}
         >
-          {mutation => (
+          {(mutation, { loading, error }) => (
+            <div>
               <Button label={login ? 'Login' : 'Sign up'}
                 onClick={mutation} />
+              {loading && <Spinning />}
+              {error && <Box pad='medium'>
+                <Notification
+                  message='Something went wrong, please retry'
+                  status='critical' />
+              </Box>}
+            </div>
 
           )}
         </Mutation>

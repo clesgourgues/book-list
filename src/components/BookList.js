@@ -14,6 +14,6 @@ const BookList = props => (
         <Book book={book} />
       </Tile>)}
     </Tiles>
-)
+  )
 
 export default BookList
