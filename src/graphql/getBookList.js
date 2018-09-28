@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const getBookListQuery= gql`
   query {
-    feed {
+    feed(orderBy: createdAt_DESC) {
       id
       title
       author

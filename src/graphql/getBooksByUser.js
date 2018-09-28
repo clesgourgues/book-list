@@ -11,6 +11,7 @@ query booksByUser($id: ID!){
         author
         description
         image
+        createdAt
         postedBy {
           id
           name

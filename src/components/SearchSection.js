@@ -9,7 +9,6 @@ import { AUTH_TOKEN } from '../constants'
 
 const SearchSection = () => {
   const authToken = localStorage.getItem(AUTH_TOKEN)
-
   return (
     authToken ?
     (<Query

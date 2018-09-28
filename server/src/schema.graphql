@@ -1,11 +1,10 @@
-# import Book, Vote, CustomBook, VoteSubscriptionPayload, VoteSubscriptionPayload from "./generated/prisma.graphql"
+# import Book, Vote, CustomBook, VoteSubscriptionPayload, VoteSubscriptionPayload ,BookOrderByInput from "./generated/prisma.graphql"
 
 type Query {
-  feed: [Book!]!
+  feed(filter: String, skip: Int, first: Int, orderBy: BookOrderByInput): [Book!]!
   book(id: ID!): Book
   me: User
   booksByUser(id: ID!): User
-  searchBooks(searchTerm: String!): [CustomBook]
 }
 
 input BookFilter {

@@ -12,26 +12,11 @@ function getUserId(context) {
   throw new Error('Not authenticated')
 }
 
-function getSearchResult(result) {
-  const bookList = result.items.map(book => {
-    const obj = {}
-    obj.title = book.volumeInfo.title
-    obj.author = book.volumeInfo.author
-    obj.description = book.volumeInfo.description
-    obj.publishedDate = book.volumeInfo.publishedDate
-    obj.isbn = book.volumeInfo.industryIdentifiers[1].identifier
-    obj.image = book.volumeInfo.imageLinks.thumbnail
-    return obj
-  }
-  )
-  return JSON.stringify(bookList)
-}
 
 
 module.exports = {
   APP_SECRET,
   getUserId,
-  getSearchResult
 }
 
 /* type SearchBookResult {
