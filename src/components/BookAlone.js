@@ -25,7 +25,7 @@ const BookAlone = props => {
       justify='center'
       align='center'>
       <Box pad='small' alignSelf='start'>
-        <Anchor align='center' onClick={props.handleBack} icon={<FormPrevious colorIndex='light-1' size="small" />}
+        <Anchor align='center' onClick={props.history.goBack} icon={<FormPrevious colorIndex='light-1' size="small" />}
           label='Back to results'
         />
       </Box>

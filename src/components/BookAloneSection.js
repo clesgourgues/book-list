@@ -15,7 +15,7 @@ const BookAloneSection = props => {
         if (error) return <Notification
           message='Something went wrong, please retry'
           status='critical' />
-          const userId = me.id
+        const userId = me.id
         return (<Query query={getBookByIdQuery} variables={{ id }}>
           {({ loading, error, data }) => {
             if (loading) return <Spinning />
@@ -25,12 +25,10 @@ const BookAloneSection = props => {
             const bookToRender = data.book;
             const isInCollection = userId === bookToRender.postedBy.id;
             return (
-              <BookAlone book={bookToRender} isInCollection={isInCollection}/>
+              <BookAlone book={bookToRender} isInCollection={isInCollection} />
             )
           }}
         </Query>)
-
-
       }}
     </Query>
   )

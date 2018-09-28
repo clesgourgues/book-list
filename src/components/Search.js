@@ -38,10 +38,10 @@ class Search extends Component {
     this.setState({ selectedBook: book })
   }
 
-  handleBack = book => {
+/*   handleBack = book => {
     this.setState({ selectedBook: [] })
   }
-
+ */
   reset = () => {
     this.textInput.current.inputRef.value = '';
     this.setState({ books: [], searchTerm: '' })
