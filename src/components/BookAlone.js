@@ -2,49 +2,14 @@ import React from 'react'
 import { Mutation } from 'react-apollo';
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
-import gql from 'graphql-tag'
 import { Section, Heading, Image, Button, Paragraph, Timestamp, Anchor, Box } from 'grommet';
 import FormPrevious from 'grommet/components/icons/base/FormPrevious';
 import Favorite from 'grommet/components/icons/base/Favorite';
-import { AUTH_TOKEN } from '../constants'
+import { postMutation, voteMutation } from '../graphql';
+import { AUTH_TOKEN } from '../constants';
 
 
-const POST_MUTATION = gql`
-  mutation PostMutation($title: String!, $author: String!, $textSnippet: String, $description: String!, $publishedDate: String, $isbn: String!, $image: String, $publisher: String, $pageCount: String) {
-    post(description: $description, title: $title, author:$author, textSnippet: $textSnippet, publishedDate: $publishedDate, isbn: $isbn, image: $image, publisher: $publisher, pageCount: $pageCount ) {
-      id
-      createdAt
-      title
-      author
-      textSnippet
-      description
-      publishedDate
-      isbn
-      image
-      publisher
-      pageCount
-    }
-  }
-`
 
-const VOTE_MUTATION = gql`
-  mutation VoteMutation($bookId: ID!) {
-    vote(bookId: $bookId) {
-      id
-      link {
-        votes {
-          id
-          user {
-            id
-          }
-        }
-      }
-      user {
-        id
-      }
-    }
-  }
-`
 
 const BookAlone = props => {
   const { id, author, title, description, textSnippet, publishedDate, image, isbn, publisher, pageCount } = props.book
@@ -84,7 +49,7 @@ const BookAlone = props => {
             justify='center'
             align='start'>
             <Mutation
-              mutation={POST_MUTATION} variables={{ author, title, description, textSnippet, publishedDate, image, isbn, publisher, pageCount }}
+              mutation={postMutation} variables={{ author, title, description, textSnippet, publishedDate, image, isbn, publisher, pageCount }}
               /* update={(cache, { data: { Book } }) => {
                const { books } = cache.readQuery({ query: ROOT_QUERY.feed });
                cache.writeQuery({
@@ -104,7 +69,7 @@ const BookAlone = props => {
                     type='submit' />
               )}
             </Mutation>
-            <Mutation mutation={VOTE_MUTATION}>
+            <Mutation mutation={voteMutation}>
               {voteMutation => (
                 <Box pad='small' onClick={voteMutation({ variables: { bookId: id } })}>
                   <Anchor align='center' icon={<Favorite colorIndex='light-1' size="small" />}

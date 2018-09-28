@@ -1,24 +1,8 @@
 import React from 'react'
 import { Form, Header, Heading, Footer, Button, FormFields, TextInput, PasswordInput, FormField, Notification, Box } from 'grommet';
 import Spinning from 'grommet/components/icons/Spinning'
-import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
-
-const SIGNUP_MUTATION = gql`
-  mutation SignupMutation($email: String!, $password: String!, $name: String!) {
-    signup(email: $email, password: $password, name: $name) {
-      token
-    }
-  }
-`
-
-const LOGIN_MUTATION = gql`
-  mutation LoginMutation($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      token
-    }
-  }
-`
+import { Mutation } from 'react-apollo';
+import { loginMutation, signupMutation } from '../graphql';
 
 
 const LoginForm = props => {
@@ -53,7 +37,7 @@ const LoginForm = props => {
       </ FormFields>
       <Footer pad={{ "vertical": "medium" }}>
         <Mutation
-          mutation={login ? LOGIN_MUTATION : SIGNUP_MUTATION}
+          mutation={login ? loginMutation : signupMutation}
           variables={{ email, password, name }}
           onCompleted={data => handleClick(data)}
         >
