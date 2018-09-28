@@ -8,6 +8,7 @@ export const getBookListQuery= gql`
       author
       description
       image
+      createdAt
       postedBy {
           id
           name

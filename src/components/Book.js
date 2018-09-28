@@ -3,7 +3,8 @@ import { Card, Anchor } from 'grommet'
 import { Link } from 'react-router-dom'
 
 const Book = props => {
-  const description = props.book.postedBy ? `Posted by ${props.book.postedBy.name}` : null
+  const date = props.book.createdAt.split('T')[0]
+  const description = props.book.postedBy ? `Posted by ${props.book.postedBy.name} on ${date}` : null
   return (
     <Link to={`/${props.book.id}`}>
       <Card thumbnail={props.book.image}
