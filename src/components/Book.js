@@ -1,7 +1,6 @@
 import React from 'react'
 import { Card, Anchor } from 'grommet'
 import { Link } from 'react-router-dom'
-import { withRouter } from 'react-router'
 
 const Book = props => {
   const description = props.book.postedBy ? `Posted by ${props.book.postedBy.name}` : null
@@ -22,4 +21,4 @@ const Book = props => {
     </Link>
   )
 }
-export default withRouter(Book)
+export default Book

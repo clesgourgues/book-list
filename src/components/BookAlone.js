@@ -12,10 +12,13 @@ import { AUTH_TOKEN } from '../constants';
 
 
 const BookAlone = props => {
-  const { id, author, title, description, textSnippet, publishedDate, image, isbn, publisher, pageCount } = props.book
+  const { author, title, description, textSnippet, publishedDate, image, isbn, publisher, pageCount } = props.book
+
   const publishInfo = publisher ? <strong>Published by {publisher} on <Timestamp value={publishedDate}
     fields='date' /></strong> : null
+
   const pagesInfo = pageCount ? <strong> - {pageCount} pages</strong> : null
+
   const authToken = localStorage.getItem(AUTH_TOKEN)
   return (
     <Section pad='medium'
@@ -44,7 +47,7 @@ const BookAlone = props => {
           </Box>
         </Box>
 
-        {authToken ?
+        {authToken && !props.isInCollection ?
           (<Box pad='small'
             justify='center'
             align='start'>
@@ -59,17 +62,17 @@ const BookAlone = props => {
              }}  */
               onCompleted={() => props.history.push('/collection')}>
               {postMutation => (
-                  <Button
-                    label='Save to my collection'
-                    onClick={postMutation}
-                    primary={false}
-                    secondary={false}
-                    accent={false}
-                    plain={false}
-                    type='submit' />
+                <Button
+                  label='Save to my collection'
+                  onClick={postMutation}
+                  primary={false}
+                  secondary={false}
+                  accent={false}
+                  plain={false}
+                  type='submit' />
               )}
             </Mutation>
-            <Mutation mutation={voteMutation}>
+            {/*             <Mutation mutation={voteMutation}>
               {voteMutation => (
                 <Box pad='small' onClick={voteMutation({ variables: { bookId: id } })}>
                   <Anchor align='center' icon={<Favorite colorIndex='light-1' size="small" />}
@@ -77,18 +80,27 @@ const BookAlone = props => {
                   />
                 </Box>
               )}
-            </Mutation></Box>)
-          : (
-            <Box pad='small'
-              justify='center'
-              align='start'>
-              <Paragraph margin='medium'>
-                <Link to="/login">
-                  <Anchor tag='span' align='start'
-                    label='Login' >Login</Anchor>
-                </Link> to save this book to your collection !
+            </Mutation> */}
+          </Box>)
+          : authToken && props.isInCollection ? (<Button
+            label='Already in my collection'
+            primary={false}
+            secondary={false}
+            accent={false}
+            plain={false}
+            disabled={true}
+            type='button' />)
+            : (
+              <Box pad='small'
+                justify='center'
+                align='start'>
+                <Paragraph margin='medium'>
+                  <Link to="/login">
+                    <Anchor tag='span' align='start'
+                      label='Login' >Login</Anchor>
+                  </Link> to save this book to your collection !
               </Paragraph>
-            </Box>)}
+              </Box >)}
 
         <Box pad='small'
           justify='center'
@@ -97,8 +109,8 @@ const BookAlone = props => {
             {description}
           </Paragraph>
         </Box>
-      </div>
-    </Section>
+      </div >
+    </Section >
 
   )
 }
