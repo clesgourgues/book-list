@@ -5,9 +5,8 @@ import { withRouter } from 'react-router'
 import { Section, Heading, Image, Button, Paragraph, Timestamp, Anchor, Box } from 'grommet';
 import FormPrevious from 'grommet/components/icons/base/FormPrevious';
 import Favorite from 'grommet/components/icons/base/Favorite';
-import { postMutation, voteMutation } from '../graphql';
+import { postMutation, voteMutation, getBookByIdQuery } from '../graphql';
 import { AUTH_TOKEN } from '../constants';
-
 
 
 
@@ -53,13 +52,14 @@ const BookAlone = props => {
             align='start'>
             <Mutation
               mutation={postMutation} variables={{ author, title, description, textSnippet, publishedDate, image, isbn, publisher, pageCount }}
-              /* update={(cache, { data: { Book } }) => {
-               const { books } = cache.readQuery({ query: ROOT_QUERY.feed });
-               cache.writeQuery({
-                 query: GET_TODOS.feed,
-                 data: { todos: todos.concat([Book]) }
-               });
-             }}  */
+              update={(cache, { data: { newBook } }) => {
+                const { books } = cache.readQuery({ query: getBookByIdQuery, variables: {id: props.match.params.id} });
+                cache.writeQuery({
+                  query: getBookByIdQuery,
+                  variables: {id: props.match.params.id},
+                  data: { books: books.concat([newBook]) }
+                });
+              }}
               onCompleted={() => props.history.push('/collection')}>
               {postMutation => (
                 <Button
