@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
-import { withRouter } from 'react-router'
-import { Box, Header, Menu, Anchor, Title, Section } from 'grommet'
-import { AUTH_TOKEN } from '../constants'
+import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
+import { withApollo } from 'react-apollo';
+import { Box, Header, Menu, Anchor, Title, Section } from 'grommet';
+import { AUTH_TOKEN } from '../constants';
 
 const AppHeader = (props) => {
   const authToken = localStorage.getItem(AUTH_TOKEN)
@@ -39,9 +40,10 @@ const AppHeader = (props) => {
               <Link to="/">
                 <Anchor tag='span' align='start'
                   label='Login' onClick={() => {
-                    localStorage.removeItem(AUTH_TOKEN)
-                    props.history.push(`/`)
-                  }}>Logout</Anchor>
+                    localStorage.removeItem(AUTH_TOKEN);
+                    props.client.resetStore();
+                    props.history.push(`/`);
+                    }}>Logout</Anchor>
               </Link>
             ) : (
                 <Link to="/login">
@@ -56,4 +58,4 @@ const AppHeader = (props) => {
   )
 }
 
-export default withRouter(AppHeader);
+export default withRouter(withApollo((AppHeader)));
