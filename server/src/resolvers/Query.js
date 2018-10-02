@@ -13,7 +13,7 @@ function feed(parent, args, context, info) {
 }
 
 function booksByUser(parent, args, context, info) {
-  return context.db.query.user({ where: { id: args.id } }, info)
+  return context.db.query.user({ where: { id: args.id }}, info)
 }
 
 function book(parent, args, context, info) {

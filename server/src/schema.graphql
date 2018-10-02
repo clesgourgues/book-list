@@ -15,7 +15,7 @@ type Mutation {
   post(title: String!, author: String!, description: String!, publishedDate: String, image: String, isbn: String!, textSnippet: String, publisher: String, pageCount: String ): Book!
   signup(email: String!, password: String!, name: String!): AuthPayload
   login(email: String!, password: String!): AuthPayload
-  vote(linkId: ID!): Vote
+  vote(bookId: ID!): Vote
 }
 
 type AuthPayload {

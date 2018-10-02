@@ -17,7 +17,7 @@ query book($id: ID!){
         id
         name
       }
-      votes {
+    votes {
         id
         user {
           id

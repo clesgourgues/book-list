@@ -4,7 +4,7 @@ export const voteMutation = gql`
   mutation VoteMutation($bookId: ID!) {
     vote(bookId: $bookId) {
       id
-      link {
+      book {
         votes {
           id
           user {

@@ -18,7 +18,7 @@ class BookQuery extends Component {
           margin='small'>
           Recently added
         </Heading>
-        <Query query={getBookListQuery}>
+        <Query query={getBookListQuery} fetchPolicy='cache-and-network'>
           {({ loading, error, data }) => {
             if (loading) return <div>Fetching</div>
             if (error) return <div>Error</div>

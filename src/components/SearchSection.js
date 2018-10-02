@@ -11,9 +11,7 @@ const SearchSection = () => {
   const authToken = localStorage.getItem(AUTH_TOKEN)
   return (
     authToken ?
-    (<Query
-      query={getUserNameQuery}
-    >
+    (<Query query={getUserNameQuery}>
       {({ loading, error, data: { me } }) => {
         if (loading) return <Spinning />
         if (error) return <Notification

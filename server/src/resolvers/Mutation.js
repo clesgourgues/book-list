@@ -44,8 +44,8 @@ async function login(parent, args, context, info) {
   }
 }
 
-function post(parent, args, context, info) {
-  const userId = getUserId(context)
+async function post(parent, args, context, info) {
+  const userId = await getUserId(context)
   return context.db.mutation.createBook(
     {
       data: {

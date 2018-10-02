@@ -9,7 +9,7 @@ import BookList from './BookList';
 const Collection = ({ user }) => {
   const id = user.id
   return (
-    <Query query={getBooksByUserQuery} variables={{ id }}>
+    <Query query={getBooksByUserQuery} variables={{ id }} fetchPolicy='cache-and-network'>
       {({ loading, error, data }) => {
         if (loading) return <Spinning />
         if (error) return <Notification

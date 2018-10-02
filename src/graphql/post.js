@@ -14,6 +14,10 @@ mutation PostMutation($title: String!, $author: String!, $textSnippet: String, $
     image
     publisher
     pageCount
+    postedBy {
+        id
+        name
+      }
   }
 }
 `
