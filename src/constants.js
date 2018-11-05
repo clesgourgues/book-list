@@ -1,4 +1,3 @@
 export const baseURL = 'https://www.googleapis.com/books/v1/volumes';
-export const API_KEY = 'AIzaSyAEUvnODn7rbMRzl6GbGOBdY6dKQs1kxPY';
-
-export const AUTH_TOKEN = 'auth-token'
+export const API_KEY = process.env.GOOGLE_API_KEY;
+export const AUTH_TOKEN = 'auth-token';
