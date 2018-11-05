@@ -9,6 +9,9 @@
 # production
 /build
 
+# prisma
+/server/database/prisma.yml
+
 # misc
 .DS_Store
 .env.local
